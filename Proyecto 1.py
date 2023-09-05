@@ -10,9 +10,8 @@ def nfa_to_dfa(nfa_i: NFA, nfa_f: NFA):
 	simbolos_entrada = extract_simbolos_entrada(nfa_i)
 	s0 = epsilon_closure([nfa_i])
 	sub_conjuntos["s0"] = [afn_node.label for afn_node in s0]
-	s,t = get_conjuntos(simbolos_entrada,sub_conjuntos, transiciones,["s0",s0])
+	s,t = subset(simbolos_entrada,sub_conjuntos, transiciones,["s0",s0])
 	return build_dfa(s,t,nfa_f.label)
-
 
 expr = "aabb"
 infix_expr = "a|b*"

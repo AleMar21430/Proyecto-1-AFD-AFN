@@ -67,23 +67,17 @@ def visualize_nfa(root: NFA, end):
 
 def visualize_nfa_node(dot: Digraph, state: NFA , visited, end):
 	if state:
-		if state in visited:
-			return
-
+		if state in visited: return
 		visited.add(state)
 
-		if state.label == end :
-			dot.node(state.label, label=state.label, shape="doublecircle")
-		else:
-			dot.node(state.label, label=state.label, shape="circle")
+		if state.label == end : dot.node(state.label, label=state.label, shape="doublecircle")
+		else: dot.node(state.label, label=state.label, shape="circle")
 
 		for i, nodes in state.transitions.items():
-			for node in nodes:
-				dot.edge(state.label, node.label, label=i)
+			for node in nodes: dot.edge(state.label, node.label, label=i)
 
 		for i, nodes in state.transitions.items():
-			for node in nodes:
-				visualize_nfa_node(dot, node, visited,end)
+			for node in nodes: visualize_nfa_node(dot, node, visited, end)
 
 def simulate_nfa(afn: Tuple[NFA, NFA], string: str):
 	states = [afn[0]]
