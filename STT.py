@@ -7,7 +7,7 @@ class STT:
 		self.L: STT | None = None
 		self.R: STT | None = None
 
-def build_stt(expr: str) -> STT:
+def build_syntax_tree(expr: str) -> STT:
 	Stack = []
 	for char in expr:
 		if char in ['*', '+', '?', '.' , '|']:

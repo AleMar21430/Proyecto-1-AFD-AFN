@@ -57,7 +57,7 @@ def build_nfa(Node: STT) -> Tuple[NFA, NFA]:
 	return ei, ef
 
 def visualize_nfa(root: NFA, end):
-	dot = Digraph(format="png")
+	dot = Digraph("NFA", format="png")
 	dot.attr(rankdir="LR")
 	visited = set()
 	dot.node("_start", shape="point")

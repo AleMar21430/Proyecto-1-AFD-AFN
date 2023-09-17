@@ -43,7 +43,7 @@ def build_dfa(states: Dict, transitions: Dict, final_state: DFA):
 	return AFD_states[0]
 
 def visualize_dfa(root: DFA):
-	dot = Digraph(format="png")
+	dot = Digraph("DFA", format="png")
 	dot.attr(rankdir="LR")
 	visited = set()
 	dot.node("_start", shape="point")
@@ -62,8 +62,8 @@ def visualize_dfa_node(dot: Digraph, state: DFA , visited: DFA):
 		for i, node in state.transitions.items(): dot.edge(state.label, node.label, label=i)
 		for i, node in state.transitions.items(): visualize_dfa_node(dot, node, visited)
 
-def simulate_dfa(dfa: Tuple[DFA, DFA], string: str):
-	pass
+def simulate_dfa(dfa: Tuple[DFA, DFA], string: str) -> bool:
+	return False
 
 def extract_simbolos_entrada(afn_node: NFA, io: Set = set(), visited = []):
 	if afn_node and afn_node.label not in visited:
@@ -75,7 +75,7 @@ def extract_simbolos_entrada(afn_node: NFA, io: Set = set(), visited = []):
 				extract_simbolos_entrada(state,io)
 	return io
 
-def subset(symbols: str, subsets: Dict, transitions: List, subset_f, subset_i = 1):
+def subset(symbols: str, subsets: Dict, transitions: List, subset_f, subset_i = 1) -> Tuple[Dict, List]:
 	last_subset = subsets.copy()
 	view_subset = []
 	temp_subset = []
