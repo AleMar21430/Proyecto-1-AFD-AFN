@@ -42,7 +42,7 @@ def build_dfa(states: Dict, transitions: Dict, final_state: DFA):
 	return AFD_states[0]
 
 def visualize_dfa(root: DFA):
-	graph = Digraph("DFA", format="png")
+	graph = Digraph("DFA","","DFA","Graph","png")
 	graph.attr(rankdir="LR")
 	visited = set()
 	graph.node("_start", shape="point")

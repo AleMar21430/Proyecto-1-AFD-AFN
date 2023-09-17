@@ -1,5 +1,4 @@
 from graphviz import Digraph
-from typing import Tuple, List
 
 class STT:
 	def __init__(self, val):
@@ -22,7 +21,7 @@ def build_syntax_tree(expr: str) -> STT:
 	return Stack[0] if Stack else None
 
 def visualize_stt(node: STT):
-	graph = Digraph("STT", format='png')
+	graph = Digraph("STT","","STT","Graph","png")
 	visualize_stt_node(graph, node)
 	return graph
 
