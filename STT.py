@@ -21,15 +21,19 @@ def build_syntax_tree(expr: str) -> STT:
 			Stack.append(Node)
 	return Stack[0] if Stack else None
 
-def visualize_stt(nodo: STT):
-	dot = Digraph(format='png')
-	if nodo:
-		dot.node(str(id(nodo)), label = nodo.value)
-		if nodo.L:
-			dot.node(str(id(nodo.L)), label=nodo.L.value)
-			dot.edge(str(id(nodo)), str(id(nodo.L)))
-			visualize_stt(dot, nodo.L)
-		if nodo.R:
-			dot.node(str(id(nodo.R)), label=nodo.R.value)
-			dot.edge(str(id(nodo)), str(id(nodo.R)))
-			visualize_stt(dot, nodo.R)
+def visualize_stt(node: STT):
+	graph = Digraph("STT", format='png')
+	visualize_stt_node(graph, node)
+	return graph
+
+def visualize_stt_node(graph: Digraph, node: STT):
+	if node:
+		graph.node(str(id(node)), label=node.value)
+		if node.L:
+			graph.node(str(id(node.L)), label=node.L.value)
+			graph.edge(str(id(node)), str(id(node.L)))
+			visualize_stt_node(graph, node.L)
+		if node.R:
+			graph.node(str(id(node.R)), label=node.R.value)
+			graph.edge(str(id(node)), str(id(node.R)))
+			visualize_stt_node(graph, node.R)

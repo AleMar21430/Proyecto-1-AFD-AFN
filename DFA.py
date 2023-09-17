@@ -8,7 +8,7 @@ class DFA:
 		self.transitions = {}
 		self.accept = accept
 
-	def add_transition(self, input: str, state):
+	def add_transition(self, input: str, state: 'DFA'):
 		self.transitions[input] = state
 
 def epsilon_closure(afn_nodes: List[NFA], input: str = None) -> List[DFA]:
@@ -29,38 +29,42 @@ def epsilon_closure(afn_nodes: List[NFA], input: str = None) -> List[DFA]:
 
 def build_dfa(states: Dict, transitions: Dict, final_state: DFA):
 	AFD_states: List[DFA] = []
-	for sub, states in states.items():
-		if final_state in states:
-			AFD_states.append(DFA(sub,True))
-		else:
-			AFD_states.append(DFA(sub))
+	for substate, state in states.items():
+		if final_state in state: AFD_states.append(DFA(substate,True))
+		else: AFD_states.append(DFA(substate))
+
 	for transition in transitions:
 		for state in AFD_states:
 			if state.label == transition[1]:
-				for destino in AFD_states:
-					if destino.label == transition[2]:
-						state.add_transition(transition[0], destino)
+				for target in AFD_states:
+					if target.label == transition[2]:
+						state.add_transition(transition[0], target)
 	return AFD_states[0]
 
 def visualize_dfa(root: DFA):
-	dot = Digraph("DFA", format="png")
-	dot.attr(rankdir="LR")
+	graph = Digraph("DFA", format="png")
+	graph.attr(rankdir="LR")
 	visited = set()
-	dot.node("_start", shape="point")
-	dot.edge("_start", root.label,)
-	visualize_dfa_node(dot, root ,visited)
-	return dot
+	graph.node("_start", shape="point")
+	graph.edge("_start", root.label,)
+	visualize_dfa_node(graph, root ,visited)
+	return graph
 
-def visualize_dfa_node(dot: Digraph, state: DFA , visited: DFA):
-	if state:
-		if state in visited: return
-		visited.add(state)
+def visualize_dfa_node(graph: Digraph, dfa: DFA , visited: DFA):
+	if dfa:
+		if dfa in visited: return
 
-		if state.accept: dot.node(state.label, label=state.label, shape="doublecircle")
-		else: dot.node(state.label, label=state.label, shape="circle")
+		visited.add(dfa)
 
-		for i, node in state.transitions.items(): dot.edge(state.label, node.label, label=i)
-		for i, node in state.transitions.items(): visualize_dfa_node(dot, node, visited)
+		if dfa.accept:
+			graph.node(dfa.label, label=dfa.label, shape="doublecircle")
+		else:
+			graph.node(dfa.label, label=dfa.label, shape="circle")
+
+		for item, node in dfa.transitions.items():
+			graph.edge(dfa.label, node.label, label=item)
+		for item, node in dfa.transitions.items():
+			visualize_dfa_node(graph, node, visited)
 
 def simulate_dfa(dfa: Tuple[DFA, DFA], string: str) -> bool:
 	return False

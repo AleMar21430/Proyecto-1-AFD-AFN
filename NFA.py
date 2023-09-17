@@ -1,13 +1,13 @@
 from graphviz import Digraph
-from typing import Tuple, List
+from typing import Tuple, List, Set
 from STT import STT
 
 class NFA:
 	state = 0
 	def __init__(self):
-		self.label = f"q{self.state}"
+		self.label = f"q{NFA.state}"
 		self.transitions = {}
-		self.state += 1
+		NFA.state += 1
 
 	def add_transition(self, input: str, state):
 		if input not in self.transitions: self.transitions[input] = set()
@@ -27,36 +27,36 @@ def epsilon_closure(states: List[NFA]) -> List[NFA]:
 	return list(temp)
 
 def build_nfa(Node: STT) -> Tuple[NFA, NFA]:
-	ei = NFA()
-	ef = NFA()
+	state_A = NFA()
+	state_B = NFA()
 	if not Node: return None, None
 
 	if Node.value in ["*", ".", "|"]:
 		if Node.value == "|":
 			eiL, efL = build_nfa(Node.L)
 			eiR, efR = build_nfa(Node.R)
-			ei.add_transition("ε", eiL)
-			ei.add_transition("ε", eiR)
-			efL.add_transition("ε", ef)
-			efR.add_transition("ε", ef)
+			state_A.add_transition("ε", eiL)
+			state_A.add_transition("ε", eiR)
+			efL.add_transition("ε", state_B)
+			efR.add_transition("ε", state_B)
 		elif Node.value == "*":
 			transitiveI, transitiveF = build_nfa(Node.R)
-			ei.add_transition("ε", ef)
-			ei.add_transition("ε", transitiveI)
+			state_A.add_transition("ε", state_B)
+			state_A.add_transition("ε", transitiveI)
 			transitiveF.add_transition("ε",transitiveI)
-			transitiveF.add_transition("ε",ef)
+			transitiveF.add_transition("ε",state_B)
 
 		elif Node.value == ".":
 			eiL, efL = build_nfa(Node.L)
 			eiR, efR = build_nfa(Node.R)
-			ei = eiL
-			ef = efR
+			state_A = eiL
+			state_B = efR
 			efL.add_transition("ε", eiR)
-	else: ei.add_transition(Node.value, ef)
+	else: state_A.add_transition(Node.value, state_B)
 
-	return ei, ef
+	return state_A, state_B
 
-def visualize_nfa(root: NFA, end):
+def visualize_nfa(root: NFA, end: str):
 	dot = Digraph("NFA", format="png")
 	dot.attr(rankdir="LR")
 	visited = set()
@@ -65,7 +65,7 @@ def visualize_nfa(root: NFA, end):
 	visualize_nfa_node(dot, root, visited, end)
 	return dot
 
-def visualize_nfa_node(dot: Digraph, state: NFA , visited, end):
+def visualize_nfa_node(dot: Digraph, state: NFA , visited: Set, end: str):
 	if state:
 		if state in visited: return
 		visited.add(state)
