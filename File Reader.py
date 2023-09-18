@@ -18,8 +18,8 @@ for i, infix_expr in enumerate(open("./Expr.txt").readlines()):
 	print(f"Infix:   {infix_expr}")
 	print(f"Postfix: {postfix_expr}")
 	print("---------------------------Simulation-----------------------------")
-	print(f"La Cadena w: {expr} pertenece a {infix_expr}  ?   w ∈ L(r) NFA: {simulate_nfa((nfa_start, nfa_end),expr)}")
-	print(f"La Cadena w: {expr} pertenece a {infix_expr}  ?   w ∈ L(r) DFA: {simulate_dfa(dfa, expr)}")
+	print(f"if {{  w = {expr}  &&  L(r) = {infix_expr}  }}:  w ∈ L(r) ? NFA: {simulate_nfa((nfa_start, nfa_end),expr)}")
+	print(f"if {{  w = {expr}  &&  L(r) = {infix_expr}  }}:  w ∈ L(r) ? DFA: {simulate_dfa(dfa, expr)}")
 	print("------------------------------------------------------------------\n")
 
 	graph = visualize_stt(syntax_tree, f"STT {i}")

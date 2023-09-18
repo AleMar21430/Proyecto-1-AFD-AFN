@@ -55,8 +55,15 @@ def visualize_dfa_node(graph: Digraph, dfa: DFA , visited: DFA):
 		for item, node in dfa.transitions.items(): graph.edge(dfa.label, node.label, label=item)
 		for item, node in dfa.transitions.items(): visualize_dfa_node(graph, node, visited)
 
-def simulate_dfa(dfa: Tuple[DFA, DFA], string: str) -> bool:
-	return False
+def simulate_dfa(dfa: DFA, string: str) -> bool:
+	current_state = dfa
+	for char in string:
+		if char in current_state.transitions:
+			current_state = current_state.transitions[char]
+		else:
+			return False  # Transition not defined, reject input
+
+	return current_state.accept
 
 def extract_simbolos_entrada(afn_node: NFA, io: Set = set(), visited = []):
 	if afn_node and afn_node.label not in visited:
