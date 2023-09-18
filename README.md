@@ -1,6 +1,6 @@
 # Proyecto-1-AFD-AFN
 
-Alejandro Martínez - 21430
+## Alejandro Martínez - 21430
 
 🗸 Implementación del Algoritmo de Shunting Yard de conversión infix a postfix.
 
@@ -12,4 +12,4 @@ Alejandro Martínez - 21430
 
 🗸 Implementación de simulación de AFN.
 
-± Implementación de simulación de AFD.
+± __*Implementación de simulación de AFD.*__
