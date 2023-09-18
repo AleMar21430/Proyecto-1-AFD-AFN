@@ -6,8 +6,8 @@ from DFA import *
 expr = "ab"
 infix_expr = "(a|b)?+ab*abb"
 
-#expr = input("Cadena w:  ")
-#expr = input("Expresión regular r:  ")
+expr = input("Cadena w:  ")
+expr = input("Expresión regular r:  ")
 
 postfix_expr = infix_to_postfix(infix_expr)
 

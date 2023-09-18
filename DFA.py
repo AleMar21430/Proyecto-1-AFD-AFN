@@ -37,8 +37,8 @@ def build_dfa(states: Dict, transitions: Dict, final_state: DFA):
 					if target.label == transition[2]: state.add_transition(transition[0], target)
 	return AFD_states[0]
 
-def visualize_dfa(root: DFA):
-	graph = Digraph("DFA","","DFA","Graph","png")
+def visualize_dfa(root: DFA, name: str = "DFA"):
+	graph = Digraph(name,"",name,"Graph","png")
 	graph.attr(rankdir="LR")
 	graph.node("_start", shape="point")
 	graph.edge("_start", root.label,)
@@ -77,13 +77,13 @@ def subset(symbols: str, subsets: Dict, transitions: List, subset_f, subset_i = 
 		if set(closure) not in [set(sub) for sub in subsets.values()]:
 			name = f"s{subset_i}"
 			subsets[name] = closure
-			if [symbol, subset_f[0], name] not in transitions: transitions.append([symbol, subset_f[0] ,name])
+			if [symbol, subset_f[0], name] not in transitions: transitions.append([symbol, subset_f[0], name])
 			subsets[f"s{subset_i}"] = closure
 			subset_i += 1
 		else:
 			for key, value in subsets.items():
 				if set(value) == set(closure):
-					result =  key
+					result = key
 					if [symbol, result, result] not in transitions: transitions.append([symbol, result, result])
 		view_subset.append(closure)
 		temp_subset.append(cerradura)
@@ -91,9 +91,11 @@ def subset(symbols: str, subsets: Dict, transitions: List, subset_f, subset_i = 
 	for sub_observer in view_subset:
 		for sub_last in last_subset.values():
 			if len(sub_last) == len(sub_observer):
-				if set(sorted(sub_last)) == set(sorted(sub_observer)): hits +=1 
+				if set(sorted(sub_last)) == set(sorted(sub_observer)): hits += 1
 	if hits < len(view_subset):
-		for sub in temp_subset: subset(symbols,subsets,transitions,[f"s{subset_i-(len(temp_subset)-1)+temp_subset.index(sub)}",sub],subset_i)
+		for sub in temp_subset:
+			label = subset_i - (len(temp_subset) - 1) + temp_subset.index(sub)
+			subset(symbols,subsets,transitions,[f"s{label}", sub], subset_i)
 	return subsets, transitions
 
 def nfa_to_dfa(nfa_i: NFA, nfa_f: NFA):
@@ -102,5 +104,5 @@ def nfa_to_dfa(nfa_i: NFA, nfa_f: NFA):
 	entry = extract_simbolos_entrada(nfa_i)
 	s0 = epsilon_closure([nfa_i])
 	sub_set["s0"] = [afn_node.label for afn_node in s0]
-	state, transition = subset(entry,sub_set, transitions,["s0",s0])
-	return build_dfa(state,transition,nfa_f.label)
+	state, transition = subset(entry, sub_set, transitions,["s0", s0])
+	return build_dfa(state, transition, nfa_f.label)

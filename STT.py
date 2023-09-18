@@ -20,8 +20,8 @@ def build_syntax_tree(expr: str) -> STT:
 			Stack.append(Node)
 	return Stack[0] if Stack else None
 
-def visualize_stt(node: STT):
-	graph = Digraph("STT","","STT","Graph","png")
+def visualize_stt(node: STT, name: str = "STT"):
+	graph = Digraph(name,"",name,"Graph","png")
 	visualize_stt_node(graph, node)
 	return graph
 

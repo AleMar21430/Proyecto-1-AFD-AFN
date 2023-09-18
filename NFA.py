@@ -56,8 +56,8 @@ def build_nfa(Node: STT) -> Tuple[NFA, NFA]:
 
 	return state_A, state_B
 
-def visualize_nfa(root: NFA, end: str):
-	dot = Digraph("NFA","","NFA","Graph","png")
+def visualize_nfa(root: NFA, end: str, name: str = "NFA"):
+	dot = Digraph(name,"",name,"Graph","png")
 	dot.attr(rankdir="LR")
 	dot.node("_start", shape="point")
 	dot.edge("_start", root.label, label="ε")
